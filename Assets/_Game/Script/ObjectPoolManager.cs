@@ -9,6 +9,8 @@ public class ObjectPoolManager : SimpleSingleton<ObjectPoolManager>
     GameObject obj;
     Transform parent;
 
+    public GameObject poolObject;
+
     private void Awake()
     {
         pools = new List<GameObject>();

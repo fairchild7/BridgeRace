@@ -12,6 +12,7 @@ public class Floor : MonoBehaviour
 
     public (int, bool)[,] checkBrick;
     public List<Color> colorList;
+    public List<Brick> brickList;
 
     private List<int> brickCount;
 
@@ -32,9 +33,10 @@ public class Floor : MonoBehaviour
 
     public void OnInit()
     {
-        ObjectPoolManager.Instance.OnInit(brickPrefab.gameObject, transform, 100);
+        ObjectPoolManager.Instance.OnInit(brickPrefab.gameObject, ObjectPoolManager.Instance.poolObject.transform, 100);
 
         brickCount = new List<int>();
+        brickList = new List<Brick>();
         for (int i = 0; i < colorList.Count; i++)
         {
             brickCount.Add(0);
@@ -71,7 +73,8 @@ public class Floor : MonoBehaviour
                 {
                     if (!checkBrick[x, y].Item2)
                     {
-                        yield return new WaitForSeconds(5f);
+                        float timeToWait = Random.Range(0f, 3f);
+                        yield return new WaitForSeconds(timeToWait);
                         GenerateBrick(x, y);
                     }
                 }
@@ -103,11 +106,14 @@ public class Floor : MonoBehaviour
         if (brickCount[randomNumber] < (width * length) / brickCount.Count + 1)
         {
             Brick brick = ObjectPoolManager.Instance.GetObjectFromPool().GetComponent<Brick>();
+            brick.transform.SetParent(transform);
             brick.transform.localPosition = position;
+            brick.transform.localRotation = Quaternion.identity;
             brick.OnInit(colorList[randomNumber]);
             brickCount[randomNumber]++;
             brick.position = new Vector2Int(x, y);
             checkBrick[x, y] = (randomNumber, true);
+            brickList.Add(brick);
         }
         else
         {

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class LevelManager : MonoBehaviour
 {
@@ -20,16 +21,16 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField] GameObject player;
 
-    [SerializeField] int numberOfPlayers = 4;
-
     private string[,] mapType;
 
-    private GameObject startPoint;
-    private GameObject finishBox;
+
+    [SerializeField] GameObject startPoint;
+    [SerializeField] GameObject finishBox;
     private GameObject map;
 
     public List<Color> colorList;
     public List<Floor> floorList;
+    public List<Enemy> enemies;
 
     private void Awake()
     {
@@ -45,11 +46,21 @@ public class LevelManager : MonoBehaviour
         floorList[0].OnInit();
         StartCoroutine(floorList[0].RegenerateBrick());
         colorList.Clear();
+        foreach (Enemy e in enemies)
+        {
+            e.OnInit();
+        }
     }
 
     void Update()
     {
-        
+        foreach (Enemy e in enemies)
+        {
+            if (e.currentState != null)
+            {
+                e.currentState.OnExecute(e);
+            }
+        }
     }
 
     public void CloseBridge(Bridge bridge)
@@ -65,12 +76,19 @@ public class LevelManager : MonoBehaviour
             {
                 floorList[nextFloor].colorList.Add(colorList[i]);
             }
-            Debug.Log(floorList[nextFloor].colorList.Count);
             floorList[nextFloor].OnInit();
         }
         else
         {
             Debug.Log("Congrats!");
+        }
+    }
+
+    public void StopAllEnemies()
+    {
+        foreach (Enemy e in enemies)
+        {
+            e.GetComponent<NavMeshAgent>().isStopped = true;
         }
     }
 }

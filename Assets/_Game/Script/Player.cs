@@ -8,6 +8,12 @@ public class Player : Character
 
     [SerializeField] float moveSpeed = 5f;
 
+    protected override void Start()
+    {
+        base.Start();
+        OnInit();
+    }
+
     private void FixedUpdate()
     {
         rb.velocity = new Vector3(joystick.Horizontal * moveSpeed, rb.velocity.y, joystick.Vertical * moveSpeed);    
@@ -26,7 +32,6 @@ public class Player : Character
     {
         base.OnInit();
         brickCount = 0;
-        //gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material.color = Color.red;
         gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
     }
 }
