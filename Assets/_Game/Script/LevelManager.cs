@@ -39,17 +39,7 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
-        for (int i = 0; i < colorList.Count; i++)
-        {
-            floorList[0].colorList.Add(colorList[i]);
-        }
-        floorList[0].OnInit();
-        StartCoroutine(floorList[0].RegenerateBrick());
-        colorList.Clear();
-        foreach (Enemy e in enemies)
-        {
-            e.OnInit();
-        }
+        
     }
 
     void Update()
@@ -60,6 +50,21 @@ public class LevelManager : MonoBehaviour
             {
                 e.currentState.OnExecute(e);
             }
+        }
+    }
+
+    public void StartLevel()
+    {
+        for (int i = 0; i < colorList.Count; i++)
+        {
+            floorList[0].colorList.Add(colorList[i]);
+        }
+        floorList[0].OnInit();
+        StartCoroutine(floorList[0].RegenerateBrick());
+        colorList.Clear();
+        foreach (Enemy e in enemies)
+        {
+            e.OnInit();
         }
     }
 
@@ -88,7 +93,7 @@ public class LevelManager : MonoBehaviour
     {
         foreach (Enemy e in enemies)
         {
-            e.GetComponent<NavMeshAgent>().isStopped = true;
+            e.agent.isStopped = true;
         }
     }
 }

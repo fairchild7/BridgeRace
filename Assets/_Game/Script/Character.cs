@@ -87,6 +87,20 @@ public class Character : MonoBehaviour
                 transform.GetComponent<Enemy>().ChangeState(new PatrolState());
             }
         }
+
+        if (collider.CompareTag("Finish"))
+        {
+            BR_UIManager.Instance.gamePlay.Close();
+            if (GetComponent<Enemy>() != null)
+            {
+                BR_UIManager.Instance.lose.Open();
+            }
+            else if (GetComponent<Player>() != null)
+            {
+                BR_UIManager.Instance.win.Open();
+            }
+            GameControl.Instance.End();
+        }
     }
 
     protected IEnumerator CheckBridge()
