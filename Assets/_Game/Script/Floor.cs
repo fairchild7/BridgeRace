@@ -16,21 +16,6 @@ public class Floor : MonoBehaviour
 
     private List<int> brickCount;
 
-    private void Awake()
-    {
-        
-    }
-
-    private void Start()
-    {
-        
-    }
-
-    private void Update()
-    {
-
-    }
-
     public void OnInit()
     {
         ObjectPoolManager.Instance.OnInit(brickPrefab.gameObject, ObjectPoolManager.Instance.poolObject.transform, 100);
